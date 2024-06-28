@@ -11,9 +11,8 @@ export default createRequestHandler({
   build,
   mode: process.env.NODE_ENV,
   getLoadContext: (context) => {
-   
-      setApiUrl(constants.API_URL);
-
+    if (context.env !== undefined && context.env.VENDURE_API_URL !== undefined)
+      setApiUrl(context.env.VENDURE_API_URL);
     return context.env;
   },
 });
