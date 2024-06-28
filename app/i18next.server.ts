@@ -5,19 +5,18 @@ import HttpBackend from 'i18next-http-backend';
 import { RemixI18NextOption } from 'remix-i18next/build/server';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { findLanguageJSON } from '~/languages.server';
-
-// export async function getPlatformBackend() {
-//   if (IS_CF_PAGES || IS_VERCEL) {
-//     return HttpBackend;
-//   } else {
-//     return await safeRequireNodeDependency('i18next-fs-backend').then(
-//       (module) => module.default,
-//     );
-//   }
-// }
+import { IS_CF_PAGES, IS_VERCEL, safeRequireNodeDependency } from './utils/platform-adapter';
 
 export async function getPlatformBackend() {
+  if (IS_CF_PAGES || IS_VERCEL) {
     return HttpBackend;
+  } else if (IS_VERCEL) {
+    return await import('i18next-fs-backend').then((module) => module.default);
+  } else {
+    return await safeRequireNodeDependency('i18next-fs-backend').then(
+      (module) => module.default,
+    );
+  }
 }
 
 /*
