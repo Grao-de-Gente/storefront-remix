@@ -64,9 +64,11 @@ const buildConfig = {
  * @type {import('@remix-run/dev').AppConfig}
  */
 const vercelConfig = {
-  serverBuildTarget: 'vercel',
+  serverBuildPath: 'functions/[[path]].js',
+  serverPlatform: 'neutral',
   server: './server-vercel.js',
   ignoredRouteFiles: ['**/.*'],
+  serverMinify: true,
   ...commonConfig,
 };
 
@@ -77,7 +79,7 @@ function selectConfig() {
   if (process.env.NETLIFY) return netlifyConfig;
   if (process.env.VERCEL) return vercelConfig;
   if (process.env.NODE_ENV === 'development') return devConfig;
-  if (!process.env.CF_PAGES && !process.env.NETLIFY) return buildConfig;
+  if (!process.env.CF_PAGES && !process.env.NETLIFY && !process.env.VERCEL) return buildConfig;
   throw new Error(`Cannot select config`);
 }
 
