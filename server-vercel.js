@@ -12,7 +12,7 @@ export default createRequestHandler({
   mode: process.env.NODE_ENV,
   getLoadContext: (context) => {
    
-      setApiUrl(context.env.VENDURE_API_URL);
+      setApiUrl(constants.API_URL);
 
     return context.env;
   },
