@@ -11,12 +11,9 @@ export default createRequestHandler({
   build,
   mode: process.env.NODE_ENV,
   getLoadContext: (context) => {
-    const env = context?.env || {};
+   
+      setApiUrl(context.env.VENDURE_API_URL);
 
-    if (typeof env.VENDURE_API_URL === 'string') {
-      setApiUrl(env.VENDURE_API_URL);
-    }
-
-    return env;
+    return context.env;
   },
 });
