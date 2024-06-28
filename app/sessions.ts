@@ -1,5 +1,6 @@
 import {
   IS_CF_PAGES,
+  IS_VERCEL,
   safeRequireNodeDependency,
 } from '~/utils/platform-adapter';
 import { SessionStorage } from '@remix-run/server-runtime/dist/sessions';
@@ -8,7 +9,7 @@ import { createCookieSessionStorage } from '@remix-run/cloudflare';
 import { CreateCookieSessionStorageFunction } from '@remix-run/server-runtime';
 
 async function getCookieSessionStorageFactory(): Promise<CreateCookieSessionStorageFunction> {
-  if (IS_CF_PAGES) {
+  if (IS_CF_PAGES || IS_VERCEL) {
     return createCookieSessionStorage;
   } else {
     return safeRequireNodeDependency('@remix-run/node').then(

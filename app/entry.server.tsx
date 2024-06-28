@@ -10,6 +10,7 @@ import { I18nextProvider, initReactI18next } from 'react-i18next';
 import i18n from './i18n';
 import {
   IS_CF_PAGES,
+  IS_VERCEL,
   safeRequireNodeDependency,
 } from '~/utils/platform-adapter';
 
@@ -122,7 +123,7 @@ export default async function handleRequest(
     </I18nextProvider>
   );
 
-  const requestHandler: PlatformRequestHandler = IS_CF_PAGES
+  const requestHandler: PlatformRequestHandler = (IS_CF_PAGES || IS_VERCEL)
     ? handleCfRequest
     : handleNodeRequest;
 
