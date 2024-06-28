@@ -23,16 +23,12 @@ export async function getPlatformBackend() {
  * This is done to prevent hydration errors
  * entry.server.tsx must use the http backend in a cloudflare context, but loaders/action functions need to load translations into memory
  */
-// export async function getPlatformBackendApiCtx() {
-//   if (IS_CF_PAGES || IS_VERCEL) {
-//     return resourcesToBackend(findLanguageJSON);
-//   }
-
-//   return getPlatformBackend();
-// }
-
 export async function getPlatformBackendApiCtx() {
+  if (IS_CF_PAGES) {
     return resourcesToBackend(findLanguageJSON);
+  }
+
+  return getPlatformBackend();
 }
 
 export async function platformAdapti18nConfig(config: RemixI18NextOption) {
