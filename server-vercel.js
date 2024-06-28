@@ -11,13 +11,12 @@ export default createRequestHandler({
   build,
   mode: process.env.NODE_ENV,
   getLoadContext: (context) => {
-    if (
-      'VENDURE_API_URL' in context.env &&
-      typeof context.env.VENDURE_API_URL === 'string'
-    ) {
-      setApiUrl(context.env.VENDURE_API_URL);
+    const env = context?.env || {};
+
+    if (typeof env.VENDURE_API_URL === 'string') {
+      setApiUrl(env.VENDURE_API_URL);
     }
 
-    return context.env;
+    return env;
   },
 });
