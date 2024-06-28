@@ -2,35 +2,38 @@ import { RemixI18Next } from 'remix-i18next';
 
 import i18n from '~/i18n'; // your i18n configuration file
 import HttpBackend from 'i18next-http-backend';
-import {
-  IS_CF_PAGES,
-  IS_VERCEL,
-  safeRequireNodeDependency,
-} from '~/utils/platform-adapter';
 import { RemixI18NextOption } from 'remix-i18next/build/server';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { findLanguageJSON } from '~/languages.server';
 
+// export async function getPlatformBackend() {
+//   if (IS_CF_PAGES || IS_VERCEL) {
+//     return HttpBackend;
+//   } else {
+//     return await safeRequireNodeDependency('i18next-fs-backend').then(
+//       (module) => module.default,
+//     );
+//   }
+// }
+
 export async function getPlatformBackend() {
-  if (IS_CF_PAGES || IS_VERCEL) {
     return HttpBackend;
-  } else {
-    return await safeRequireNodeDependency('i18next-fs-backend').then(
-      (module) => module.default,
-    );
-  }
 }
 
 /*
  * This is done to prevent hydration errors
  * entry.server.tsx must use the http backend in a cloudflare context, but loaders/action functions need to load translations into memory
  */
-export async function getPlatformBackendApiCtx() {
-  if (IS_CF_PAGES || IS_VERCEL) {
-    return resourcesToBackend(findLanguageJSON);
-  }
+// export async function getPlatformBackendApiCtx() {
+//   if (IS_CF_PAGES || IS_VERCEL) {
+//     return resourcesToBackend(findLanguageJSON);
+//   }
 
-  return getPlatformBackend();
+//   return getPlatformBackend();
+// }
+
+export async function getPlatformBackendApiCtx() {
+    return resourcesToBackend(findLanguageJSON);
 }
 
 export async function platformAdapti18nConfig(config: RemixI18NextOption) {
